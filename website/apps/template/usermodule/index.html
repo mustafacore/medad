@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد المخطوطات العربية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <a href="#" class="logo">خطاط</a>
+    <div class="container">
+        <h1>مولد المخطوطات العربية</h1>
+        <p>أدخل النص الذي تريد رؤيته كمخطوطة</p>
+        <div class="input-container">
+            <input type="text" placeholder="اكتب النص...">
+            <i class="fas fa-random"></i>
+        </div>        
+        
+        <button>إنشاء مخطوطة</button>
+    </div>
+</body>
+</html>
