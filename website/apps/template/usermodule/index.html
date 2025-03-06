@@ -15,10 +15,15 @@
         let inputField = document.getElementById("user_input");
         let inputValue = inputField.value.trim();
 
-        let arabicRegex = /^[\u0600-\u06FF\s]+$/;
+        // Check if input contains only Arabic letters and spaces
+        if (!inputValue.match(/^[\u0600-\u06FF\s]+$/)) {
+            alert("❌ يُسمح فقط بإدخال الحروف العربية!");
+            return false;
+        }
 
-        if (!arabicRegex.test(inputValue)) {
-            alert("❌ يُسمح فقط بإدخال النصوص العربية بدون أرقام أو رموز!");
+        // Check if input contains any Arabic numbers
+        if (inputValue.match(/[\u0660-\u0669١٢٣٤٥٦٧٨٩٠]/)) {
+            alert("❌ غير مسموح بإدخال الأرقام العربية!");
             return false;
         }
 
@@ -44,7 +49,8 @@
                 <input type="text" id="user_input" name="user_input" placeholder="اكتب النص..." required>
                 <i class="fas fa-random"></i>
             </div>        
-            <button type="submit">إنشاء مخطوطة</button>
+            {% comment %} <button type="submit">إنشاء مخطوطة</button> {% endcomment %}
+            <button type="submit" class="btn">إنشاء مخطوطة</button>
         </form>
     </div>
 </body>
