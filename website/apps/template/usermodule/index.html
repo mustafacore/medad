@@ -47,7 +47,20 @@
             {% csrf_token %}
             <div class="input-container">
                 <input type="text" id="user_input" name="user_input" placeholder="اكتب النص..." required>
-                <i class="fas fa-random"></i>
+                <i class="fas fa-random" onclick="generateRandomText()" style="cursor: pointer;"></i>
+                <script>
+                    function generateRandomText() {
+                        const arabicPhrases = [
+                            'السلام عليكم',
+                            'سبحان الله',
+                            'بسم الله الرحمن الرحيم',
+                            'الحمد لله',
+                            'لا إله إلا الله'
+                        ];
+                        const randomPhrase = arabicPhrases[Math.floor(Math.random() * arabicPhrases.length)];
+                        document.getElementById('user_input').value = randomPhrase;
+                    }
+                </script>
             </div>        
             {% comment %} <button type="submit">إنشاء مخطوطة</button> {% endcomment %}
             <button type="submit" class="btn">إنشاء مخطوطة</button>
