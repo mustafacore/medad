@@ -1,0 +1,153 @@
+/* ---------------------- */
+/* Body and Container     */
+/* ---------------------- */
+body {
+    font-family: 'Almarai', sans-serif;
+    background-image: url("../img/Gradient 5.png");
+    background-size: cover;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    /* Fade-in animation */
+    opacity: 0;
+    animation: fadeIn 1s forwards ease-in-out;
+}
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.container {
+    text-align: center;
+    margin-bottom: 64px;
+}
+h1 {
+    font-size: 48px;
+    margin: 0 0 24px;
+    padding: 0;
+    color: #F4F4F4;
+}
+p {
+    margin: 0 0 64px;
+    font-size: 24px;
+    padding: 0;
+    color: #F4F4F485;
+}
+
+/* ---------------------- */
+/* Buttons and Logo       */
+/* ---------------------- */
+button {
+    padding: 12px 64px;
+    border: none;
+    border-radius: 12px;
+    background-color: #DDDDDD;
+    color: #1E1E1E;
+    font-size: 24px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 64px;
+}
+button:hover {
+    background-color: rgba(224, 224, 224, 0.856);
+}
+
+.logo {
+    position: absolute;
+    top: 32px;
+    right: 120px;
+    color: #FEFEFE;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+/* ---------------------- */
+/* Input Container        */
+/* ---------------------- */
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    width: 798px;
+    background-color: #1E1E1E;
+    border-radius: 12px;
+    padding: 0 20px;
+}
+.input-container i {
+    color: #F4F4F4;
+    font-size: 24px;
+    cursor: pointer;
+}
+.input-container input {
+    font-size: 18px;
+    padding: 24px 0;
+    border: none;
+    background: transparent;
+    color: #F4F4F4;
+    outline: none;
+    flex: 1;
+}
+
+/* ---------------------- */
+/* Error Handling         */
+/* ---------------------- */
+.error-message {
+    display: block;
+    color: #ff8888;
+    margin-top: 8px;
+    min-height: 24px;
+    font-size: 16px;
+}
+.input-container.error {
+    border: 2px solid #ff8888;
+    border-radius: 12px;
+}
+
+/* ---------------------- */
+/* Spinner Styling        */
+/* ---------------------- */
+.spinner {
+    display: none; /* Hidden by default */
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #1E1E1E;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---------------------- */
+/* Responsiveness         */
+/* ---------------------- */
+@media (max-width: 768px) {
+    .input-container {
+        width: 90%;
+        margin: 0 auto;
+    }
+    h1 {
+        font-size: 32px;
+    }
+    p {
+        font-size: 18px;
+    }
+    button {
+        font-size: 20px;
+        padding: 12px 32px;
+    }
+    .logo {
+        right: 32px;
+        font-size: 16px;
+    }
+}

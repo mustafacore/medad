@@ -5,66 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مولد المخطوطات العربية</title>
+    <!-- Fonts and Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 
-<script>
-    function validateInput() {
-        let inputField = document.getElementById("user_input");
-        let inputValue = inputField.value.trim();
-
-        // Check if input contains only Arabic letters and spaces
-        if (!inputValue.match(/^[\u0600-\u06FF\s]+$/)) {
-            alert("❌ يُسمح فقط بإدخال الحروف العربية!");
-            return false;
-        }
-
-        // Check if input contains any Arabic numbers
-        if (inputValue.match(/[\u0660-\u0669١٢٣٤٥٦٧٨٩٠]/)) {
-            alert("❌ غير مسموح بإدخال الأرقام العربية!");
-            return false;
-        }
-
-        let words = inputValue.split(/\s+/);
-        if (words.length > 10) {
-            alert("⚠️ يُسمح بإدخال 10 كلمات كحد أقصى!");
-            return false;
-        }
-
-        return true;
-    }
-</script>
-
-<body>
+<body class="fade-in">
     <a href="#" class="logo">خطاط</a>
     <div class="container">
         <h1>مولد المخطوطات العربية</h1>
         <p>أدخل النص الذي تريد رؤيته كمخطوطة</p>
 
-        <form action="{% url 'generate_text' %}" method="POST" onsubmit="return validateInput();">
+        <!-- Remove inline onsubmit and use an ID for the form -->
+        <form id="myForm" action="{% url 'generate_text' %}" method="POST">
             {% csrf_token %}
-            <div class="input-container">
-                <input type="text" id="user_input" name="user_input" placeholder="اكتب النص..." required>
+            <div class="input-container" id="inputContainer">
+                <input type="text" id="user_input" name="user_input" required>
                 <i class="fas fa-random" onclick="generateRandomText()" style="cursor: pointer;"></i>
-                <script>
-                    function generateRandomText() {
-                        const arabicPhrases = [
-                            'السلام عليكم',
-                            'سبحان الله',
-                            'بسم الله الرحمن الرحيم',
-                            'الحمد لله',
-                            'لا إله إلا الله'
-                        ];
-                        const randomPhrase = arabicPhrases[Math.floor(Math.random() * arabicPhrases.length)];
-                        document.getElementById('user_input').value = randomPhrase;
-                    }
-                </script>
-            </div>        
-            {% comment %} <button type="submit">إنشاء مخطوطة</button> {% endcomment %}
-            <button type="submit" class="btn">إنشاء مخطوطة</button>
+            </div>
+            <!-- Display validation errors in real-time -->
+            <span id="error-msg" class="error-message"></span>
+            <!-- Submit button with spinner -->
+            <button type="submit" class="btn" id="submit-btn">
+              <span class="btn-text">إنشاء مخطوطة</span>
+              <span class="spinner" id="spinner"></span>
+            </button>
         </form>
     </div>
+
+    <!-- Main JS -->
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
