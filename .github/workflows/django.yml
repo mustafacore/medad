@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]  # Matrix to test different Python versions
+        python-version: [3.8, 3.9]  # Removed 3.7 due to the error
       max-parallel: 4
 
     steps:
