@@ -1,41 +1,48 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مولد المخطوطات العربية</title>
-    <!-- Fonts and Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
+{% extends 'usermodule/layout/base.html' %}
 
-<body class="fade-in">
-    <a href="#" class="logo">خطاط</a>
-    <div class="container">
-        <h1>مولد المخطوطات العربية</h1>
-        <p>أدخل النص الذي تريد رؤيته كمخطوطة</p>
+{% block title %}مولد المخطوطات العربية{% endblock %}
 
-        <!-- Remove inline onsubmit and use an ID for the form -->
-        <form id="myForm" action="{% url 'generate_text' %}" method="POST">
-            {% csrf_token %}
-            <div class="input-container" id="inputContainer">
-                <input type="text" id="user_input" name="user_input" required>
-                <i class="fas fa-random" onclick="generateRandomText()" style="cursor: pointer;"></i>
-            </div>
-            <!-- Display validation errors in real-time -->
-            <span id="error-msg" class="error-message"></span>
+{% block content %}
+    <h1>مولد المخطوطات العربية</h1>
+    <p>أدخل النص الذي تريد رؤيته كمخطوطة</p>
+
+    <form id="myForm" action="{% url 'generate_text' %}" method="POST">
+        {% csrf_token %}
+        
+        <!-- Input container -->
+        <div class="input-container" id="inputContainer">
+            <input 
+                type="text" 
+                id="user_input" 
+                name="user_input" 
+                required 
+                placeholder="اكتب النص..."
+            >
+            <i 
+                class="fas fa-random" 
+                onclick="generateRandomText()" 
+                style="cursor: pointer;"
+            ></i>
+        </div>
+
+        <!-- 
+          Button & error share the same container.
+          We give this container a fixed height (or min-height) so
+          that toggling between button & error doesn’t shift layout.
+        -->
+        <div id="button-or-error" style="margin-top: 20px; min-height: 50px;">
             <!-- Submit button with spinner -->
             <button type="submit" class="btn" id="submit-btn">
-              <span class="btn-text">إنشاء مخطوطة</span>
-              <span class="spinner" id="spinner"></span>
+                <span class="btn-text">إنشاء مخطوطة</span>
+                <span class="spinner" id="spinner"></span>
             </button>
-        </form>
-    </div>
-
-    <!-- Main JS -->
-    <script src="{% static 'js/script.js' %}"></script>
-</body>
-</html>
+            
+            <!-- Error message, hidden by default -->
+            <span 
+                id="error-msg" 
+                class="error-message" 
+                style="display: none;"
+            ></span>
+        </div>
+    </form>
+{% endblock %}
