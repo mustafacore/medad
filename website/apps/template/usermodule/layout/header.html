@@ -1,3 +1,42 @@
-<header>
-    <a href="{% url 'index' %}" class="logo">خطاط</a>
+{% load static %}
+<header class="main-header">
+    <div class="header-container">
+        <!-- Right side: Brand (logo + text) -->
+        <div class="header-right">
+            <!-- Brand (logo + text) at far right -->
+            <div class="brand">
+                <img src="{% static 'svg/logo.svg' %}" alt="مِدَاد Logo" class="logo-svg" />
+                <span class="brand-text">مِدَاد</span>
+            </div>
+
+            <!-- Vertical line -->
+            <span class="vertical-line"></span>
+
+            <!-- Navigation -->
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">الرئيسية</a></li>
+                    <li><a href="#">حول</a></li>
+                    <li><a href="#">اقتراح</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Left side: Clock -->
+        <div class="header-left">
+            <span id="clock" class="header-clock"></span>
+        </div>
+    </div>
 </header>
+
+<!-- Clock Script -->
+<script>
+    setInterval(() => {
+    const d = new Date();
+    const h = (d.getHours() % 12) || 12;
+    document.getElementById("clock").textContent =
+      ("0" + h).slice(-2) + ":" +
+      ("0" + d.getMinutes()).slice(-2) + ":" +
+      ("0" + d.getSeconds()).slice(-2);
+  }, 1000);
+</script>

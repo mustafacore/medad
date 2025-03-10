@@ -5,6 +5,7 @@ const inputField = document.getElementById("user_input");
 const errorMsg = document.getElementById("error-msg");
 const inputContainer = document.getElementById("inputContainer");
 const form = document.getElementById("myForm");
+const submitBtn = document.getElementById("submit-btn");
 
 // Function to check the validity of the input value
 function checkValidity(value) {
@@ -13,7 +14,7 @@ function checkValidity(value) {
         return "❌ يُسمح فقط بإدخال الحروف العربية!";
     }
     // Check if input contains any Arabic numbers
-    if (value.match(/[\u0660-\u0669١٢٣٤٥٦٧٨٩٠]/)) {
+    if (value.match(/[\u0660-\u0669	١۲۳٤٥٦٧۸٩۰]/)) {
         return "❌ غير مسموح بإدخال الأرقام العربية!";
     }
     // Check word limit
@@ -26,17 +27,24 @@ function checkValidity(value) {
 
 // Listen for input events to validate text in real-time
 if (inputField) {
-  inputField.addEventListener("input", () => {
-      const trimmedValue = inputField.value.trim();
-      const error = checkValidity(trimmedValue);
-      if (error) {
-          errorMsg.textContent = error;
-          inputContainer.classList.add("error");
-      } else {
-          errorMsg.textContent = "";
-          inputContainer.classList.remove("error");
-      }
-  });
+    inputField.addEventListener("input", () => {
+        const trimmedValue = inputField.value.trim();
+        const error = checkValidity(trimmedValue);
+
+        if (error) {
+            // Show error, hide button
+            errorMsg.textContent = error;
+            errorMsg.style.display = "inline-block";  // reveal the error
+            submitBtn.style.display = "none";         // hide the button
+            inputContainer.classList.add("error");
+        } else {
+            // Hide error, show button
+            errorMsg.textContent = "";
+            errorMsg.style.display = "none";
+            submitBtn.style.display = "inline-block";
+            inputContainer.classList.remove("error");
+        }
+    });
 }
 
 // Validate on form submission and show spinner if valid
@@ -44,20 +52,20 @@ form.addEventListener("submit", function(e) {
     e.preventDefault(); // prevent immediate submission
     const trimmedValue = inputField.value.trim();
     const error = checkValidity(trimmedValue);
+
     if (error) {
-        alert(error);
+        // Invalid: do not submit
         return;
     }
     
     // Show spinner and hide button text
-    const submitBtn = document.getElementById('submit-btn');
     submitBtn.querySelector('.btn-text').style.display = 'none';
     submitBtn.querySelector('.spinner').style.display = 'inline-block';
-    
+
     // Delay submission to allow the spinner to be visible
     setTimeout(() => {
         form.submit();
-    }, 1000); // Adjust the delay as needed
+    }, 1000); // Adjust delay as needed
 });
 
 // Generate random Arabic text and trigger validation
