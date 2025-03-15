@@ -1,6 +1,6 @@
 {% extends 'usermodule/layout/base.html' %}
 
-{% block title %}مولد المخطوطات العربية{% endblock %}
+{% block title %}مِدَاد{% endblock %}
 
 {% block content %}
     <h1>مولد المخطوطات العربية</h1>
@@ -25,24 +25,14 @@
             ></i>
         </div>
 
-        <!-- 
-          Button & error share the same container.
-          We give this container a fixed height (or min-height) so
-          that toggling between button & error doesn’t shift layout.
-        -->
+        <!-- Button and error share the same container.
+             The button is hidden by default. -->
         <div id="button-or-error" style="margin-top: 20px; min-height: 50px;">
-            <!-- Submit button with spinner -->
-            <button type="submit" class="btn" id="submit-btn">
+            <button type="submit" class="btn" id="submit-btn" style="display: none;">
                 <span class="btn-text">إنشاء مخطوطة</span>
                 <span class="spinner" id="spinner"></span>
             </button>
-            
-            <!-- Error message, hidden by default -->
-            <span 
-                id="error-msg" 
-                class="error-message" 
-                style="display: none;"
-            ></span>
+            <span id="error-msg" class="error-message" style="display: none;"></span>
         </div>
     </form>
 {% endblock %}
