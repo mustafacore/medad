@@ -38,8 +38,12 @@ h1 {
 .result-box {
     margin: 20px 0;
     padding: 20px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
+    border-radius: 0px;
+}
+.generated-image {
+    max-width: 100%; /* Ensures the image is responsive */
+    height: auto;
+    margin-top: 20px;
 }
 
 h3 {

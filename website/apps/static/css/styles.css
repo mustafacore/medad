@@ -31,106 +31,130 @@ body {
 /* Header (Fixed)         */
 /* ---------------------- */
 .main-header {
-    position: fixed;         /* Keep header pinned at top */
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 9999;           /* Ensure it stays on top */
-    background: linear-gradient(to left, #1a1a1a, #2c2c2c, #1a1a1a);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    padding: 12px 0;
-    direction: rtl; /* For Arabic RTL layout */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: fixed;
+    top: 24px;              
+    left: 50%;
+    transform: translateX(-50%); 
+    width: 50%;
+    max-width: 1200px;      
+    z-index: 100;          
+    background: rgba(255, 255, 255, 0.15); 
+    backdrop-filter: blur(12px); 
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;    
+    padding: 16px 24px;      
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
 }
 
+/* Adjust header container */
 .header-container {
-    width: 90%;
-    margin: 0 auto;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content:space-between;
 }
 
-/* Right side: logo, text, line, nav links */
+/* Right side (Logo + Navigation) */
 .header-right {
     display: flex;
     align-items: center;
+    gap: 32px; /* Space between logo and nav */
 }
 
 .brand {
     display: flex;
     align-items: center;
-    margin-left: 25px; /* Space between brand and vertical line */
+    gap: 12px;
 }
-
+/* Logo styling */
 .logo-svg {
-    width: 35px;
-    height: auto;
-    margin-left: 8px; /* Space between logo and text */
-    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+    width: 32px;
+    
 }
 
+/* Brand text (optional: remove if not needed) */
 .brand-text {
-    font-size: 30px;
-    color: #FFFFFF;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-    font-weight: 500;
+    font-size: 28px;
+    color: white;
+    font-weight: 600;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
 }
 
-.vertical-line {
-    width: 1px;
-    height: 30px;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(255,255,255,0.8), rgba(255,255,255,0.05));
-    margin: 0 20px; /* Space on both sides of the line */
-}
-
+/* Navigation styles */
 .main-nav ul {
     list-style: none;
     display: flex;
+    gap: 24px;
     margin: 0;
     padding: 0;
 }
 
-.main-nav li {
-    margin-left: 15px; /* Space between nav items */
-}
-
 .main-nav a {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.945);
     text-decoration: none;
     font-size: 18px;
-    transition: color 0.3s ease;
-    padding: 5px 8px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
 .main-nav a:hover {
-    color: #ffffff;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Left side: clock */
+/* Left side (Clock) */
 .header-left {
     display: flex;
     align-items: center;
-    direction: ltr; /* Keep clock in LTR direction */
 }
 
 .header-clock {
     font-size: 18px;
-    color: #FFFFFF;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 6px 12px;
-    border-radius: 20px;
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.3), 0 0 5px rgba(255,255,255,0.1);
+    font-weight: bold;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
+
+/* Adjusting spacing */
+.container {
+    margin-top: 100px; /* Prevent content overlap */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-header {
+        width: 75%;
+        padding: 12px 16px;
+    }
+    
+    .brand-text {
+        font-size: 22px;
+    }
+
+    .main-nav ul {
+        gap: 12px;
+    }
+
+    .main-nav a {
+        font-size: 16px;
+    }
+
+    .header-clock {
+        font-size: 16px;
+    }
+}
+
 
 /* ---------------------- */
 /* Container              */
 /* ---------------------- */
 .container {
     /* Add top margin to avoid overlapping the fixed header */
-    margin-top: 100px; 
+    margin-top: 216px; 
     margin-bottom: 100px;
     margin-left: auto;
     margin-right: auto;
@@ -140,7 +164,7 @@ body {
 
 /* Example heading & text styling */
 h1 {
-    font-size: 48px;
+    font-size: 64px;
     margin: 0 0 24px;
     padding: 0;
     color: #F4F4F4;
@@ -177,7 +201,7 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: space-between; 
-    width: 798px;
+    width: 75%;
     background-color: #1E1E1E;
     border-radius: 12px;
     padding: 0 20px;

@@ -4,7 +4,6 @@
 {% block title %}نتيجة المخطوطة{% endblock %}
 
 {% block extra_head %}
-    <!-- Include the result-specific stylesheet -->
     <link rel="stylesheet" href="{% static 'css/result.css' %}">
 {% endblock %}
 
@@ -12,7 +11,11 @@
     <div class="fade-in">
         <h1>تم انشاء المخطوطة ✅</h1>
         <div class="result-box">
-            <h3>{{ output_text }}</h3>
+            {% if image_data %}
+                <img src="data:image/png;base64,{{ image_data }}" alt="Generated Manuscript" class="generated-image">
+            {% else %}
+                <h3>{{ output_text }}</h3>
+            {% endif %}
         </div>
         <a href="{% url 'index' %}" class="btn">إنشاء مخطوطة جديدة</a>
     </div>
