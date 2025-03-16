@@ -6,6 +6,8 @@ from django.shortcuts import render
 from PIL import Image, ImageDraw, ImageFont
 import arabic_reshaper
 from bidi.algorithm import get_display
+from django.conf import settings
+BASE_DIR = settings.BASE_DIR
 
 def create_image_with_text(text, font_path, image_size=(256, 256), initial_font_size=70, min_font_size=10):
     """Generate an image with Arabic text using the specified font, dynamically adjusting font size to fit."""
@@ -57,7 +59,7 @@ def generate_text(request):
             return render(request, "usermodule/result.html", {"output_text": "⚠️ يُسمح بإدخال 10 كلمات كحد أقصى!"})
 
         # Path to the Arabic font file (Make sure the path is correct)
-        font_path = os.path.join("apps", "static", "fonts", "arfonts-arial-bold.ttf")
+        font_path = os.path.join(BASE_DIR, "apps", "static", "fonts", "arfonts-arial-bold.ttf")
         
         try:
             # Generate the image
