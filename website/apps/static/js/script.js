@@ -5,13 +5,6 @@
     const inputContainer = document.getElementById("inputContainer");
     const form = document.getElementById("myForm");
     const submitBtn = document.getElementById("submit-btn");
-    
-    // Mobile Navigation Elements
-    const hamburgerMenu = document.querySelector('.hamburger-menu');
-    const mobileSidebar = document.querySelector('.mobile-sidebar');
-    const sidebarOverlay = document.querySelector('.sidebar-overlay');
-    const closeBtn = document.querySelector('.close-btn');
-    const body = document.body;
 
     // Function to check input validity
     function checkValidity(value) {
@@ -93,12 +86,9 @@
             ("0" + d.getMinutes()).slice(-2) + ":" +
             ("0" + d.getSeconds()).slice(-2);
         
-        // Update both clocks
+        // Update only the main clock element
         const mainClock = document.getElementById("clock");
-        const mobileClock = document.getElementById("mobile-clock");
-        
         if (mainClock) mainClock.textContent = timeString;
-        if (mobileClock) mobileClock.textContent = timeString;
     }
     
     // Initialize and update clock
@@ -121,19 +111,6 @@
 
     // Expose the function to the global scope if needed
     window.generateRandomText = generateRandomText;
-
-    // Mobile Navigation Toggle
-    function toggleMobileMenu() {
-        hamburgerMenu.classList.toggle('active');
-        mobileSidebar.classList.toggle('active');
-        sidebarOverlay.classList.toggle('active');
-        body.classList.toggle('sidebar-open');
-    }
-    
-    // Add event listeners for mobile navigation
-    if (hamburgerMenu) hamburgerMenu.addEventListener('click', toggleMobileMenu);
-    if (closeBtn) closeBtn.addEventListener('click', toggleMobileMenu);
-    if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleMobileMenu);
 
     // Typewriter effect for the placeholder text
     document.addEventListener("DOMContentLoaded", function() {

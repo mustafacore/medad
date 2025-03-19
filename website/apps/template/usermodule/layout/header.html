@@ -28,15 +28,3 @@
         </div>
     </div>
 </header>
-
-<!-- Clock Script -->
-<script>
-    setInterval(() => {
-    const d = new Date();
-    const h = (d.getHours() % 12) || 12;
-    document.getElementById("clock").textContent =
-      ("0" + h).slice(-2) + ":" +
-      ("0" + d.getMinutes()).slice(-2) + ":" +
-      ("0" + d.getSeconds()).slice(-2);
-  }, 1000);
-</script>

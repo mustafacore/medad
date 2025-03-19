@@ -11,12 +11,13 @@
     <div class="fade-in">
         <h1>تم انشاء المخطوطة ✅</h1>
         <div class="result-box">
-            {% if image_data %}
-                <img src="data:image/png;base64,{{ image_data }}" alt="Generated Manuscript" class="generated-image">
+            {% if processed_image_base64 %}
+                <img src="data:image/png;base64,{{ processed_image_base64 }}" alt="Processed Image">
             {% else %}
                 <h3>{{ output_text }}</h3>
             {% endif %}
         </div>
+        
         <a href="{% url 'index' %}" class="btn">إنشاء مخطوطة جديدة</a>
     </div>
 {% endblock %}
