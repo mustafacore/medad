@@ -5,18 +5,57 @@
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/result.css' %}">
+    <!-- Add Font Awesome for the download icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .image-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .download-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(28, 28, 28, 0.7);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--color-text-primary);
+            text-decoration: none;
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .download-icon:hover {
+            background: rgba(28, 28, 28, 0.9);
+            transform: scale(1.1);
+        }
+        
+        .fa-download {
+            font-size: 20px;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
     <div class="fade-in">
         <h1>تم انشاء المخطوطة ✅</h1>
-        <div class="result-box">
+        {% comment %} <div class="result-box"> {% endcomment %}
             {% if processed_image_base64 %}
-                <img src="data:image/png;base64,{{ processed_image_base64 }}" alt="Processed Image">
+                <div class="image-container">
+                    <img src="data:image/png;base64,{{ processed_image_base64 }}" alt="Processed Image">
+                    <a href="data:image/png;base64,{{ processed_image_base64 }}" download="manuscript.png" class="download-icon" title="تحميل المخطوطة">
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
             {% else %}
                 <h3>{{ output_text }}</h3>
             {% endif %}
-        </div>
+        {% comment %} </div> {% endcomment %}
         
         <a href="{% url 'index' %}" class="btn">إنشاء مخطوطة جديدة</a>
     </div>
