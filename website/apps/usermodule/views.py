@@ -11,10 +11,10 @@ from django.conf import settings
 from PIL import Image, ImageDraw, ImageFont
 import arabic_reshaper
 from bidi.algorithm import get_display
-
+from .up import upscale_with_denoise_base64
 BASE_DIR = settings.BASE_DIR
 
-def create_image_with_text(text, font_path, image_size=(256, 256), initial_font_size=70, min_font_size=10):
+def create_image_with_text(text, font_path, image_size=(224, 224), initial_font_size=27, min_font_size=10):
     """Generate an image with Arabic text using the specified font, dynamically adjusting font size to fit."""
     reshaped_text = arabic_reshaper.reshape(text)
     bidi_text = get_display(reshaped_text)
@@ -92,7 +92,7 @@ def generate_text(request):
             image_url = request.build_absolute_uri(relative_url)
             
             # Call the FastAPI endpoint with the image URL as a parameter
-            fastapi_url = "http://127.0.0.1:8001/predict_url"
+            fastapi_url = "http://127.0.0.1:8801/generate"
             params = {"url": image_url}
             fastapi_response = requests.get(fastapi_url, params=params)
             
@@ -108,6 +108,12 @@ def generate_text(request):
                 "image_url": image_url,  # Original generated image
                 "processed_image_base64": processed_image_base64,  # Processed image from FastAPI
             }
+            
+            upscaled_base64 = upscale_with_denoise_base64(context["processed_image_base64"], 
+                                                        scale_factor=8,
+                                                        denoise_strength=20, 
+                                                        sharpen=True)
+            context["processed_image_base64"] = upscaled_base64
             return render(request, "usermodule/result.html", context)
         except Exception as e:
             return render(request, "usermodule/result.html", {"output_text": f"❌ خطأ: {str(e)}"})

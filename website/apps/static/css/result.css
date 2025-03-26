@@ -59,12 +59,18 @@ h1 {
     border-radius: var(--border-radius-sm);
     background: var(--color-background);
 }
+.result-box img{
+    width: 50%;
+    height: 50%;
+    
+}
 
-.generated-image {
+
+/* .generated-image {
     max-width: 100%; /* Ensures the image is responsive */
     height: auto;
     margin-top: var(--spacing-md);
-}
+} */
 
 h3 {
     font-size: 48px; /* Keeping the original size */

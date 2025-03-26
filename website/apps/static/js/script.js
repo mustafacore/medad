@@ -18,8 +18,8 @@
         }
         // Allow a maximum of 10 words
         let words = value.split(/\s+/).filter(Boolean);
-        if (words.length > 10) {
-            return "⚠️ يُسمح بإدخال 10 كلمات كحد أقصى!";
+        if (words.length > 5) {
+            return "⚠️ يُسمح بإدخال 5 كلمات كحد أقصى!";
         }
         return "";
     }
