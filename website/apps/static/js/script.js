@@ -6,6 +6,68 @@
     const form = document.getElementById("myForm");
     const submitBtn = document.getElementById("submit-btn");
 
+    // Mobile menu elements
+    const hamburger = document.querySelector('.hamburger');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.overlay');
+
+    // Mobile menu functionality
+    function toggleMenu() {
+        if (!hamburger || !sidebar || !overlay) return;
+
+        const isActive = sidebar.classList.contains('active');
+
+        // Toggle classes
+        hamburger.classList.toggle('active');
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+
+        // Prevent body scroll when menu is open
+        document.body.style.overflow = !isActive ? 'hidden' : '';
+    }
+
+    // Initialize mobile menu
+    if (hamburger && sidebar && overlay) {
+        // Open menu
+        hamburger.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        // Close menu when clicking overlay
+        overlay.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        // Close menu when clicking a link
+        const sidebarLinks = sidebar.querySelectorAll('a');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMenu();
+                // Navigate to the link's href after a short delay
+                setTimeout(() => {
+                    window.location.href = link.href;
+                }, 300); // Match this with the sidebar transition duration
+            });
+        });
+
+        // Close menu when pressing Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Prevent clicks inside sidebar from closing it
+        sidebar.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+
     // Function to check input validity
     function checkValidity(value) {
         // Allow only Arabic letters
@@ -76,21 +138,21 @@
             }, 1000);
         });
     }
-    
+
     // Clock Script
     function updateClock() {
         const d = new Date();
         const h = (d.getHours() % 12) || 12;
-        const timeString = 
+        const timeString =
             ("0" + h).slice(-2) + ":" +
             ("0" + d.getMinutes()).slice(-2) + ":" +
             ("0" + d.getSeconds()).slice(-2);
-        
+
         // Update only the main clock element
         const mainClock = document.getElementById("clock");
         if (mainClock) mainClock.textContent = timeString;
     }
-    
+
     // Initialize and update clock
     updateClock();
     setInterval(updateClock, 1000);
@@ -113,9 +175,9 @@
     window.generateRandomText = generateRandomText;
 
     // Typewriter effect for the placeholder text
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         if (!inputField) return;
-        
+
         const placeholderText = "اكتب النص...";  // Placeholder text
         let currentIndex = 0;
         inputField.placeholder = "";
@@ -133,7 +195,7 @@
         typeAnimation();
 
         // Stop animation and clear placeholder when input is focused
-        inputField.addEventListener("focus", function() {
+        inputField.addEventListener("focus", function () {
             if (typeAnimationTimeout) {
                 clearTimeout(typeAnimationTimeout);
                 typeAnimationTimeout = null;
@@ -142,7 +204,7 @@
         });
 
         // Restart animation if the input field loses focus and is empty
-        inputField.addEventListener("blur", function() {
+        inputField.addEventListener("blur", function () {
             if (inputField.value.trim() === "") {
                 // Restart the animation when the field is empty
                 currentIndex = 0;
@@ -151,4 +213,14 @@
             }
         });
     });
+
+
 })();
+
+function downloadImage() {
+    const img = document.getElementById('generated-image');
+    const link = document.createElement('a');
+    link.download = 'مخطوطة.png';
+    link.href = img.src;
+    link.click();
+}

@@ -1,30 +1,48 @@
 {% load static %}
+<!-- Main Header -->
 <header class="main-header">
     <div class="header-container">
-        <!-- Right side: Brand (logo + text) -->
-        <div class="header-right">
-            <!-- Brand (logo + text) at far right -->
+        <!-- Left side: Brand and Navigation -->
+        <div class="header-left">
+            <!-- Brand (logo + text) -->
             <div class="brand">
                 <img src="{% static 'svg/logo.svg' %}" alt="مِدَاد Logo" class="logo-svg" />
                 <span class="brand-text">مِدَاد</span>
             </div>
 
-            <!-- Vertical line -->
+            <!-- Vertical line separator -->
             <span class="vertical-line"></span>
 
-            <!-- Navigation -->
+            <!-- Main Navigation -->
             <nav class="main-nav">
                 <ul>
-                    <li><a href="#">الرئيسية</a></li>
-                    <li><a href="#">من نحن</a></li>
-                    <li><a href="#">التواصل</a></li>
+                    <li><a href="{% url 'index' %}">الرئيسية</a></li>
+                    <li><a href="{% url 'about' %}">من نحن</a></li>
+                    <li><a href="{% url 'contact' %}">التواصل</a></li>
                 </ul>
             </nav>
         </div>
 
-        <!-- Left side: Clock -->
-        {% comment %} <div class="header-left">
+        <!-- Right side: Clock and Mobile Menu Toggle -->
+        <div class="header-right">
             <span id="clock" class="header-clock"></span>
-        </div> {% endcomment %}
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
     </div>
 </header>
+
+<!-- Mobile Sidebar (Left Side) -->
+<div class="sidebar">
+    <ul>
+        <li><a href="{% url 'index' %}">الرئيسية</a></li>
+        <li><a href="{% url 'about' %}">من نحن</a></li>
+        <li><a href="{% url 'contact' %}">التواصل</a></li>
+    </ul>
+</div>
+
+<!-- Overlay for mobile menu -->
+<div class="overlay"></div>
