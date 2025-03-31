@@ -36,6 +36,7 @@
                 <div class="contact-form">
                     <h3>أرسل رسالة</h3>
                     <form id="contactForm" class="contact-form-fields">
+                        {% csrf_token %}
                         <div class="form-group">
                             <input type="text" id="name" name="name" placeholder="الاسم" required>
                         </div>
@@ -50,8 +51,9 @@
                             إرسال الرسالة
                         </button>
                     </form>
+                    <div id="formMessage" style="display: none;"></div>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %} 
+{% endblock %}

@@ -4,28 +4,40 @@
 {% block title %}نتيجة المخطوطة{% endblock %}
 
 {% block content %}
-    <div class="fade-in result-page">
-        <div class="result-content">
-            <h1>تم انشاء المخطوطة ✅</h1>
-            
-            <div class="result-box">
-                {% if processed_image_base64 %}
-                    <img src="data:image/png;base64,{{ processed_image_base64 }}" alt="Processed Image" id="generated-image">
-                {% endif %}
-                <div class="result-content-left">
-                    <h3>{{ output_text }}</h3>
-                    <div class="button-group">
-                        <a href="{% url 'index' %}" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> إنشاء مخطوطة جديدة
-                        </a>
-                        {% if processed_image_base64 %}
-                            <button onclick="downloadImage()" class="btn btn-download">
-                                <i class="fas fa-download"></i> تحميل المخطوطة
-                            </button>
-                        {% endif %}
-                    </div>
+<div class="result-page">
+    <div class="result-wrapper">
+        <div class="result-card">
+            <div class="result-header">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
                 </div>
+                <h1>تم إنشاء المخطوطة بنجاح</h1>
+            </div>
+
+            {% if processed_image_base64 %}
+            <div class="result-preview">
+                <div class="preview-wrapper">
+                    <img id="generated-image" src="data:image/png;base64,{{ processed_image_base64 }}" alt="المخطوطة المنشأة">
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="result-details">
+                <p>{{ output_text }}</p>
+            </div>
+
+            <div class="result-actions">
+                <a href="{% url 'index' %}" class="primary-btn">
+                    <i class="fas fa-plus"></i>
+                    <span>جرّبها ثانية</span>
+                </a>
+                {% if processed_image_base64 %}
+                <span onclick="downloadImage()" class="icon-btn">
+                    <i class="fas fa-download"></i>
+                </span>
+                {% endif %}
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

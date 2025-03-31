@@ -1,5 +1,7 @@
 (function () {
-    // Get references to the DOM elements
+    /**********************
+     *  DOM Element Setup *
+     **********************/
     const inputField = document.getElementById("user_input");
     const errorMsg = document.getElementById("error-msg");
     const inputContainer = document.getElementById("inputContainer");
@@ -11,86 +13,94 @@
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.querySelector('.overlay');
 
-    // Mobile menu functionality
+    /********************************
+     *  Mobile Menu Functionality   *
+     ********************************/
     function toggleMenu() {
+        // Ensure required elements exist
         if (!hamburger || !sidebar || !overlay) return;
 
+        // Check if sidebar is active
         const isActive = sidebar.classList.contains('active');
 
-        // Toggle classes
+        // Toggle 'active' class on hamburger, sidebar, and overlay
         hamburger.classList.toggle('active');
         sidebar.classList.toggle('active');
         overlay.classList.toggle('active');
 
-        // Prevent body scroll when menu is open
+        // Toggle body scroll: disable scrolling when menu is open
         document.body.style.overflow = !isActive ? 'hidden' : '';
     }
 
-    // Initialize mobile menu
+    // Initialize mobile menu event listeners
     if (hamburger && sidebar && overlay) {
-        // Open menu
+        // Toggle menu on hamburger click
         hamburger.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
             toggleMenu();
         });
 
-        // Close menu when clicking overlay
+        // Toggle menu on overlay click (closes menu)
         overlay.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
             toggleMenu();
         });
 
-        // Close menu when clicking a link
+        // Add event listeners to all links inside the sidebar
         const sidebarLinks = sidebar.querySelectorAll('a');
         sidebarLinks.forEach(link => {
             link.addEventListener('click', (e) => {
+                // Stop propagation to avoid accidental menu closing
                 e.stopPropagation();
                 toggleMenu();
-                // Navigate to the link's href after a short delay
+                // Allow time for transition before navigating to the link
                 setTimeout(() => {
                     window.location.href = link.href;
-                }, 300); // Match this with the sidebar transition duration
+                }, 300);
             });
         });
 
-        // Close menu when pressing Escape key
+        // Close menu when Escape key is pressed
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && sidebar.classList.contains('active')) {
                 toggleMenu();
             }
         });
 
-        // Prevent clicks inside sidebar from closing it
+        // Prevent clicks inside the sidebar from bubbling up and closing the menu
         sidebar.addEventListener('click', (e) => {
             e.stopPropagation();
         });
     }
 
-    // Function to check input validity
+    /***************************
+     *  Input Validation Logic *
+     ***************************/
     function checkValidity(value) {
-        // Allow only Arabic letters
-        if (!value.match(/^[\u0600-\u06FF\s]*$/)) {
+        // Allow only Arabic letters and spaces
+        if (!/^[\u0600-\u06FF\s]*$/.test(value)) {
             return "❌ يُسمح فقط بإدخال الحروف العربية!";
         }
-        // Disallow Arabic numbers
-        if (value.match(/[\u0660-\u06FF١٢٣٤٥٦٧٨٩۰]/)) {
+        // Disallow Arabic numbers (covers common Arabic and Persian digits)
+        if (/[\u0660-\u0669\u06F0-\u06F9]/.test(value)) {
             return "❌ غير مسموح بإدخال الأرقام العربية!";
         }
-        // Allow a maximum of 10 words
-        let words = value.split(/\s+/).filter(Boolean);
+        // Limit input to a maximum of 5 words
+        const words = value.split(/\s+/).filter(Boolean);
         if (words.length > 5) {
             return "⚠️ يُسمح بإدخال 5 كلمات كحد أقصى!";
         }
         return "";
     }
 
-    // Listen for input events to validate in real-time
+    // Real-time validation on input events
     if (inputField) {
         inputField.addEventListener("input", () => {
             const trimmedValue = inputField.value.trim();
-            // If the input is empty, reset error message and hide the submit button
+
+            // Reset error message and hide submit button if input is empty
             if (trimmedValue === "") {
                 errorMsg.textContent = "";
                 errorMsg.style.display = "none";
@@ -99,7 +109,7 @@
                 return;
             }
 
-            // Check validity and display error or show submit button
+            // Validate input and display error if found
             const error = checkValidity(trimmedValue);
             if (error) {
                 errorMsg.textContent = error;
@@ -115,49 +125,59 @@
         });
     }
 
-    // Validate form on submission and show a loading spinner
+    /*********************************
+     *  Form Submission Handling     *
+     *********************************/
     if (form) {
         form.addEventListener("submit", function (e) {
-            e.preventDefault();
+            e.preventDefault(); // Prevent immediate form submission
             const trimmedValue = inputField.value.trim();
-            if (trimmedValue === "") {
-                return;
-            }
+            if (trimmedValue === "") return;
 
+            // Validate input before submitting
             const error = checkValidity(trimmedValue);
-            if (error) {
-                return;
+            if (error) return;
+
+            // Show a loading spinner by hiding button text and displaying the spinner element
+            const btnText = submitBtn.querySelector('.btn-text');
+            const spinner = submitBtn.querySelector('.spinner');
+            if (btnText && spinner) {
+                btnText.style.display = 'none';
+                spinner.style.display = 'inline-block';
             }
 
-            submitBtn.querySelector('.btn-text').style.display = 'none';  // Hide text on button
-            submitBtn.querySelector('.spinner').style.display = 'inline-block';  // Show spinner
-
-            // Submit form after a short delay (for spinner effect)
+            // Delay form submission to allow spinner effect to be visible
             setTimeout(() => {
                 form.submit();
             }, 1000);
         });
     }
 
-    // Clock Script
+    /***********************
+     *  Clock Functionality *
+     ***********************/
     function updateClock() {
-        const d = new Date();
-        const h = (d.getHours() % 12) || 12;
+        const now = new Date();
+        // Format hours as 12-hour clock
+        const hours = (now.getHours() % 12) || 12;
+        // Format time string as HH:MM:SS
         const timeString =
-            ("0" + h).slice(-2) + ":" +
-            ("0" + d.getMinutes()).slice(-2) + ":" +
-            ("0" + d.getSeconds()).slice(-2);
-
-        // Update only the main clock element
+            ("0" + hours).slice(-2) + ":" +
+            ("0" + now.getMinutes()).slice(-2) + ":" +
+            ("0" + now.getSeconds()).slice(-2);
+        // Update the clock element if it exists
         const mainClock = document.getElementById("clock");
-        if (mainClock) mainClock.textContent = timeString;
+        if (mainClock) {
+            mainClock.textContent = timeString;
+        }
     }
-
-    // Initialize and update clock
+    // Initialize the clock and update every second
     updateClock();
     setInterval(updateClock, 1000);
 
-    // Function to generate random Arabic text and trigger validation
+    /***********************************
+     *  Random Arabic Text Generation  *
+     ***********************************/
     function generateRandomText() {
         const arabicPhrases = [
             'السلام عليكم',
@@ -166,47 +186,52 @@
             'الحمد لله',
             'لا إله إلا الله'
         ];
+        // Pick a random phrase from the array
         const randomPhrase = arabicPhrases[Math.floor(Math.random() * arabicPhrases.length)];
-        inputField.value = randomPhrase;
-        inputField.dispatchEvent(new Event('input'));  // Trigger input event to validate
+        if (inputField) {
+            inputField.value = randomPhrase;
+            // Trigger input event to validate the newly set text
+            inputField.dispatchEvent(new Event('input'));
+        }
     }
-
-    // Expose the function to the global scope if needed
+    // Expose the function globally if needed
     window.generateRandomText = generateRandomText;
 
-    // Typewriter effect for the placeholder text
-    document.addEventListener("DOMContentLoaded", function () {
+    /********************************************
+     *  Typewriter Effect for Placeholder Text  *
+     ********************************************/
+    document.addEventListener("DOMContentLoaded", () => {
         if (!inputField) return;
 
-        const placeholderText = "اكتب النص...";  // Placeholder text
+        const placeholderText = "اكتب النص...";
         let currentIndex = 0;
+        // Clear any existing placeholder text
         inputField.placeholder = "";
-        let typeAnimationTimeout = null;  // Store timeout ID
+        let typeAnimationTimeout = null;
 
-        // Function to animate typing the placeholder text
+        // Function to animate typing of the placeholder text
         function typeAnimation() {
             if (currentIndex < placeholderText.length) {
                 inputField.placeholder += placeholderText.charAt(currentIndex);
                 currentIndex++;
-                typeAnimationTimeout = setTimeout(typeAnimation, 150);  // Repeat every 150ms
+                typeAnimationTimeout = setTimeout(typeAnimation, 150);
             }
         }
-        // Start typing animation when the page loads
+        // Start the typewriter animation on page load
         typeAnimation();
 
-        // Stop animation and clear placeholder when input is focused
-        inputField.addEventListener("focus", function () {
+        // Stop the animation and clear placeholder when user focuses on the input
+        inputField.addEventListener("focus", () => {
             if (typeAnimationTimeout) {
                 clearTimeout(typeAnimationTimeout);
                 typeAnimationTimeout = null;
             }
-            inputField.placeholder = "";  // Clear placeholder on focus
+            inputField.placeholder = "";
         });
 
-        // Restart animation if the input field loses focus and is empty
-        inputField.addEventListener("blur", function () {
+        // Restart the typewriter animation if input is empty upon blur
+        inputField.addEventListener("blur", () => {
             if (inputField.value.trim() === "") {
-                // Restart the animation when the field is empty
                 currentIndex = 0;
                 inputField.placeholder = "";
                 typeAnimation();
@@ -214,13 +239,75 @@
         });
     });
 
+    /******************************************
+  *  Contact Form Submission (AJAX)        *
+  ******************************************/
+    const contactForm = document.getElementById('contactForm');
 
+    if (contactForm) {
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Collect form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('message').value
+            };
+
+            const messageDiv = document.getElementById('formMessage');
+            // Get CSRF token from the form
+            const csrfTokenElem = contactForm.querySelector('[name=csrfmiddlewaretoken]');
+            const csrfToken = csrfTokenElem ? csrfTokenElem.value : '';
+
+            // Send the form data to the server using fetch
+            fetch('/contact/send/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (messageDiv) {
+                        messageDiv.style.display = 'block';
+                        if (data.status === 'success') {
+                            messageDiv.className = 'success-sending-message';
+                            messageDiv.textContent = data.message;
+                            contactForm.reset();
+                        } else {
+                            messageDiv.className = 'failed-sending-message';
+                            messageDiv.textContent = data.message;
+                        }
+                    }
+                })
+                .catch(error => {
+                    if (messageDiv) {
+                        messageDiv.style.display = 'block';
+                        messageDiv.className = 'failed-sending-message';
+                        messageDiv.textContent = 'حدث خطأ أثناء إرسال الرسالة';
+                    }
+                });
+        });
+    }
+
+    /**************************************
+     *  Download Image Functionality      *
+     **************************************/
+    function downloadImage() {
+        // Retrieve the image element from the DOM
+        const img = document.getElementById('generated-image');
+        // If image exists and has a source, create a download link
+        if (img && img.src) {
+            const link = document.createElement('a');
+            link.download = 'مخطوطة.png';
+            link.href = img.src;
+            // Trigger the download by simulating a click on the link
+            link.click();
+        }
+    }
+    // Expose the function globally if needed
+    window.downloadImage = downloadImage;
 })();
-
-function downloadImage() {
-    const img = document.getElementById('generated-image');
-    const link = document.createElement('a');
-    link.download = 'مخطوطة.png';
-    link.href = img.src;
-    link.click();
-}
