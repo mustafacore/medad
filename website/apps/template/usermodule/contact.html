@@ -4,56 +4,38 @@
 {% block title %}التواصل - مِدَاد{% endblock %}
 
 {% block content %}
-    <div class="fade-in contact-page">
+<div class="contact-page redesigned">
+    <div class="container">
+        <h1 class="page-title">تواصل معنا</h1>
         <div class="contact-content">
-            <h1>تواصل معنا</h1>
-            <div class="contact-box">
-                <div class="contact-info">
-                    <h2>نسعد بتواصلكم</h2>
-                    <p>
-                        نرحب بأسئلتكم واقتراحاتكم وملاحظاتكم. يمكنكم التواصل معنا
-                        من خلال وسائل التواصل التالية:
-                    </p>
-                    <ul class="contact-methods">
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <span>البريد الإلكتروني: contact@medad.com</span>
-                        </li>
-                        <li>
-                            <i class="fab fa-twitter"></i>
-                            <span>تويتر: @MedadApp</span>
-                        </li>
-                        <li>
-                            <i class="fab fa-instagram"></i>
-                            <span>انستغرام: @MedadApp</span>
-                        </li>
-                        <li>
-                            <i class="fab fa-github"></i>
-                            <span>GitHub: Medad-OSS</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="contact-form">
-                    <h3>أرسل رسالة</h3>
-                    <form id="contactForm" class="contact-form-fields">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" placeholder="الاسم" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" placeholder="البريد الإلكتروني" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" name="message" placeholder="رسالتك" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i>
-                            إرسال الرسالة
-                        </button>
-                    </form>
-                    <div id="formMessage" style="display: none;"></div>
-                </div>
+            <div class="contact-info">
+                <h2>نحن هنا لمساعدتك</h2>
+                <p>
+                    نرحب بجميع استفساراتكم واقتراحاتكم. يرجى مراسلتنا عبر البريد الإلكتروني للحصول على المساعدة الفورية.
+                </p>
+            </div>
+            <div class="contact-form-wrapper">
+                <h3>أرسل لنا رسالة</h3>
+                <form id="contactForm" action="https://getform.io/f/avrwlyoa" method="POST" class="contact-form">
+                    <!-- Hidden honeypot field to prevent spam -->
+                    <input type="hidden" name="_gotcha" style="display:none !important">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="الاسم" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" placeholder="رسالتك" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        إرسال الرسالة
+                    </button>
+                </form>
+                <div id="formMessage" style="display: none;"></div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

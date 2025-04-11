@@ -1475,86 +1475,101 @@ button:hover::before {
         font-size: 1.2rem;
     }
 }
-
 /* Contact Page Styles */
 .contact-page {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--spacing-md) var(--spacing-md);
+    padding: var(--spacing-md);
     padding-bottom: var(--spacing-xl);
+    /* Optional: a light background to contrast with the dark contact block */
+    background-color: #f5f5f5;
 }
 
-.contact-content {
+/* Container that wraps the contact content */
+.contact-page.redesigned .container {
     width: 90%;
     max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Main Page Title */
+.page-title {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    font-size: 2rem;
+    color: var(--color-text-primary);
+}
+
+/* Contact Content Container (grid for info and form) */
+.contact-content {
     background: linear-gradient(145deg, #1c1c1c, #232323);
     border-radius: var(--border-radius-lg);
     padding: var(--spacing-xl);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1);
     transition: all var(--transition-speed) var(--transition-easing);
     border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.contact-box {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xl);
-    margin-top: var(--spacing-lg);
 }
 
+/* Contact Information Section */
 .contact-info {
     text-align: right;
+    color: var(--color-text-primary);
 }
 
 .contact-info h2 {
-    color: var(--color-text-primary);
     margin-bottom: var(--spacing-md);
     font-size: 1.8rem;
 }
 
 .contact-info p {
-    color: var(--color-text-secondary);
-    line-height: 1.8;
     margin-bottom: var(--spacing-lg);
+    line-height: 1.8;
+    color: var(--color-text-secondary);
 }
 
-.contact-methods {
-    list-style: none;
-    padding: 0;
+/* Contact details (for email display) */
+.contact-details {
+    margin-top: var(--spacing-md);
 }
 
-.contact-methods li {
+.contact-item {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-    color: var(--color-text-secondary);
     font-size: 1.1rem;
-    padding: var(--spacing-sm) 0;
+    margin-bottom: var(--spacing-sm);
 }
 
-.contact-methods i {
+.contact-item i {
     font-size: 1.5rem;
     color: var(--color-accent-2);
     width: 30px;
     text-align: center;
 }
 
-.contact-form {
+/* Contact Form Wrapper Section */
+.contact-form-wrapper {
     background: rgba(255, 255, 255, 0.05);
     border-radius: var(--border-radius-md);
     padding: var(--spacing-lg);
 }
 
-.contact-form h3 {
-    color: var(--color-text-primary);
+/* Contact Form Heading */
+.contact-form-wrapper h3 {
     margin-bottom: var(--spacing-lg);
     font-size: 1.5rem;
     text-align: right;
+    color: var(--color-text-primary);
 }
 
-.contact-form-fields {
+/* Contact Form Fields */
+.contact-form {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
@@ -1588,26 +1603,42 @@ button:hover::before {
     background: rgba(255, 255, 255, 0.15);
 }
 
-.success-sending-message {
-    display: block;
-    color: #88ff88; /* green tone for success */
+/* Submit Button Styles */
+.submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 1rem;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    background: var(--color-accent-1);
+    color: #fff;
+    cursor: pointer;
+    transition: background var(--transition-speed) var(--transition-easing);
+}
+
+.submit-btn:hover {
+    background: var(--color-accent-2);
+}
+
+/* Message Feedback Styling */
+#formMessage {
     margin-top: var(--spacing-sm);
     min-height: 24px;
     font-size: 16px;
     transition: all var(--transition-speed) var(--transition-easing);
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.success-sending-message {
+    color: #88ff88; /* green tone for success */
 }
 
 .failed-sending-message {
-    display: block;
     color: #ff8888; /* red tone for error */
-    margin-top: var(--spacing-sm);
-    min-height: 24px;
-    font-size: 16px;
-    transition: all var(--transition-speed) var(--transition-easing);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
-
 /* Responsive Adjustments for About and Contact Pages */
 @media (max-width: 768px) {
     .contact-box {

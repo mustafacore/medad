@@ -239,59 +239,6 @@
         });
     });
 
-    /******************************************
-  *  Contact Form Submission (AJAX)        *
-  ******************************************/
-    const contactForm = document.getElementById('contactForm');
-
-    if (contactForm) {
-        contactForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            // Collect form data
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                message: document.getElementById('message').value
-            };
-
-            const messageDiv = document.getElementById('formMessage');
-            // Get CSRF token from the form
-            const csrfTokenElem = contactForm.querySelector('[name=csrfmiddlewaretoken]');
-            const csrfToken = csrfTokenElem ? csrfTokenElem.value : '';
-
-            // Send the form data to the server using fetch
-            fetch('/contact/send/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify(formData)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (messageDiv) {
-                        messageDiv.style.display = 'block';
-                        if (data.status === 'success') {
-                            messageDiv.className = 'success-sending-message';
-                            messageDiv.textContent = data.message;
-                            contactForm.reset();
-                        } else {
-                            messageDiv.className = 'failed-sending-message';
-                            messageDiv.textContent = data.message;
-                        }
-                    }
-                })
-                .catch(error => {
-                    if (messageDiv) {
-                        messageDiv.style.display = 'block';
-                        messageDiv.className = 'failed-sending-message';
-                        messageDiv.textContent = 'حدث خطأ أثناء إرسال الرسالة';
-                    }
-                });
-        });
-    }
 
     /**************************************
      *  Download Image Functionality      *

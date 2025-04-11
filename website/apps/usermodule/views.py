@@ -131,13 +131,3 @@ def contact(request):
 def handler404(request, exception):
     """Custom 404 error handler"""
     return render(request, 'usermodule/404.html', status=404)
-
-
-logger = logging.getLogger(__name__)
-
-def send_contact_email(request):
-    if request.method == 'POST':
-        # Simply return a success message without actually sending an email.
-        return JsonResponse({'status': 'success', 'message': 'تم استقبال رسالتك (وظيفة الإرسال معلقة حتى يتم تفعيلها لاحقاً)'})
-    else:
-        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
