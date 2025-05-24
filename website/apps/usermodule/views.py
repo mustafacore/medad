@@ -14,8 +14,6 @@ from bidi.algorithm import get_display
 import json
 import logging
 from django.http import JsonResponse
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
 
 BASE_DIR = settings.BASE_DIR
 
@@ -96,10 +94,12 @@ def generate_text(request):
             relative_url = settings.MEDIA_URL + "generated_images/" + filename
             image_url = request.build_absolute_uri(relative_url)
             
-            # Call the FastAPI endpoint with the image URL as a parameter
-            fastapi_url = "http://127.0.0.1:8001/generate"
-            params = {"url": image_url}
-            fastapi_response = requests.get(fastapi_url, params=params)
+            # Call the deployed FastAPI Space
+            fastapi_response = requests.get(
+                settings.FASTAPI_URL,
+                params={"url": image_url},
+                timeout=45
+            )
             
             if fastapi_response.status_code == 200:
                 # Convert FastAPI returned binary image to Base64 string

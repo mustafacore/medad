@@ -135,4 +135,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Email Configuration
+# URL of your deployed FastAPI Space
+FASTAPI_URL = "https://msallat5-medad-api.hf.space/generate"
