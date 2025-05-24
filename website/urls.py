@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('healthz/', lambda r: HttpResponse('OK')),
     path('', include("apps.usermodule.urls"))
 ]
 

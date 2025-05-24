@@ -11,3 +11,5 @@ services:
         sizeGB: 5
 
     startCommand: "gunicorn website.wsgi:application --bind 0.0.0.0:${PORT}"
+    
+    healthCheckPath: "/healthz/"
