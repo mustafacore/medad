@@ -21,14 +21,9 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, "apps" + os.sep + "template")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-from django.core.exceptions import ImproperlyConfigured
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
-if not SECRET_KEY:
-    raise ImproperlyConfigured("Missing SECRET_KEY environment variable")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+SECRET_KEY = 'django-insecure-1$2t(_dl&@vgf2r(uu#1$-pitmpoz5fwy*b^zfv3eh%5s$!7c%'
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 
@@ -112,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "Asia/Riyadh"
 
 USE_I18N = True
 
@@ -145,6 +140,4 @@ MEDIA_ROOT = "/media/generated_images"
 os.makedirs(MEDIA_ROOT, exist_ok=True)
 
 # URL of your deployed FastAPI Space
-FASTAPI_URL = os.environ.get("FASTAPI_URL")
-if not FASTAPI_URL:
-    raise ImproperlyConfigured("Missing FASTAPI_URL environment variable")
+FASTAPI_URL = "https://msallat5-medad-api.hf.space/generate"
