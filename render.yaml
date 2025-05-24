@@ -1,5 +1,3 @@
-# render.yaml
-
 services:
   - type: web
     name: medad
@@ -7,20 +5,23 @@ services:
     region: frankfurt
     plan: free
 
-    # Persistent 5 GB volume
     volumes:
       - name: media
         mountPath: /media
         sizeGB: 5
 
-    # Tell Render that your app listens on 8000
+
     httpPort: 8000
 
-    # Start command must bind to 8000
+    # Temporary: inspect environment and filesystem, then start Gunicorn
     startCommand: >
-      gunicorn website.wsgi:application
-        --bind 0.0.0.0:8000
-        --workers 2
+      bash -lc "
+        echo '--- ENVIRONMENT ---';
+        env;
+        echo '--- /app CONTENTS ---';
+        ls -R /app;
+        echo '--- STARTING GUNICORN ---';
+        gunicorn website.wsgi:application --bind 0.0.0.0:8000
+      "
 
-    # Disable health checks for now so they don’t kill us too early
     healthCheckPath: ""
