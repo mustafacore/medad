@@ -1,19 +1,17 @@
 {
   "builds": [
     {
-      "src": "website/website/wsgi.py",
+      "src": "website/wsgi.py",
       "use": "@vercel/python",
       "config": {
-        "maxLambdaSize": "50mb",
-        "runtime": "python3.11",
-        "requirementsPath": "website/requirements.txt"
+        "requirementsPath": "requirements.txt"
       }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "website/website/wsgi.py"
+      "dest": "website/wsgi.py"
     }
   ]
 }
