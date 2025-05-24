@@ -2,9 +2,12 @@ services:
   - type: web
     name: medad
     env: docker
+    region: frankfurt
     plan: free
+
     volumes:
       - name: media
         mountPath: /media
         sizeGB: 5
-=    startCommand: "gunicorn website.wsgi:application --bind 0.0.0.0:8000"
+
+    startCommand: "gunicorn website.wsgi:application --bind 0.0.0.0:${PORT}"
