@@ -1,6 +1,0 @@
-__pycache__
-*.pyc
-media/
-staticfiles/
-.env
-.git

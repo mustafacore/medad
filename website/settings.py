@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR, "apps" + os.sep + "template")
@@ -23,7 +25,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, "apps" + os.sep + "template")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 SECRET_KEY = 'django-insecure-1$2t(_dl&@vgf2r(uu#1$-pitmpoz5fwy*b^zfv3eh%5s$!7c%'
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
@@ -134,7 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = "/media/"
 
 # Path on disk where Render has mounted your persistent volume
-MEDIA_ROOT = "/media/generated_images"
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Make sure the folder exists on first start
 os.makedirs(MEDIA_ROOT, exist_ok=True)

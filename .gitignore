@@ -170,4 +170,4 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-website/media/generated_images/
+/media/generated_images/
