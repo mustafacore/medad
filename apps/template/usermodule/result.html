@@ -17,13 +17,15 @@
             {% if processed_image_base64 %}
             <div class="result-preview">
                 <div class="preview-wrapper">
-                    <img id="generated-image" src="data:image/png;base64,{{ processed_image_base64 }}" alt="المخطوطة المنشأة" style="height: 224px;">
+                    <img id="generated-image" src="data:image/png;base64,{{ processed_image_base64 }}" alt="المخطوطة المنشأة" style="height: 224px;" />
                 </div>
             </div>
             {% endif %}
 
             <div class="result-details">
+                {% if output_text %}
                 <p>{{ output_text }}</p>
+                {% endif %}
             </div>
 
             <div class="result-actions">

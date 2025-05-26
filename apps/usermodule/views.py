@@ -114,6 +114,7 @@ def generate_text(request):
             context = {
                 "image_url": image_url,  # Original generated image
                 "processed_image_base64": processed_image_base64,  # Processed image from FastAPI
+                "output_text": "" 
             }
             
             return render(request, "usermodule/result.html", context)
