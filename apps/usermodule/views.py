@@ -98,7 +98,7 @@ def generate_text(request):
             fastapi_response = requests.get(
                 settings.FASTAPI_URL,
                 params={"url": image_url},
-                timeout=55
+                timeout=115
             )
             
             if fastapi_response.status_code == 200:
