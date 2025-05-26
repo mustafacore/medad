@@ -1,21 +1,20 @@
 import os
 import re
 import uuid
-import io
 import base64
 import requests
 from urllib.parse import quote_plus
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.conf import settings
+from django.http import JsonResponse
 from PIL import Image, ImageDraw, ImageFont
 import arabic_reshaper
 from bidi.algorithm import get_display
-import json
 import logging
-from django.http import JsonResponse
 
 BASE_DIR = settings.BASE_DIR
+
+logger = logging.getLogger(__name__)
 
 def create_image_with_text(text, font_path, image_size=(224, 224), initial_font_size=27, min_font_size=10):
     """Generate an image with Arabic text using the specified font, dynamically adjusting font size to fit."""
@@ -95,17 +94,20 @@ def generate_text(request):
             image_url = request.build_absolute_uri(relative_url)
             
             # Call the deployed FastAPI Space
-            fastapi_response = requests.get(
-                settings.FASTAPI_URL,
-                params={"url": image_url},
-                timeout=115
-            )
+            with open(file_path, "rb") as img_file:
+                files = {"file": ("text.png", img_file, "image/png")}
+                fastapi_response = requests.post(
+                    settings.FASTAPI_URL + "/generate-file",
+                    files=files,
+                    timeout=120,
+                )
             
             if fastapi_response.status_code == 200:
                 # Convert FastAPI returned binary image to Base64 string
                 processed_image_data = fastapi_response.content
                 processed_image_base64 = base64.b64encode(processed_image_data).decode('utf-8')
             else:
+                logger.error(f"FastAPI returned {fastapi_response.status_code}: {fastapi_response.text}")
                 processed_image_base64 = None
 
             # Render the result page with both the generated image URL and the processed image
@@ -116,6 +118,7 @@ def generate_text(request):
             
             return render(request, "usermodule/result.html", context)
         except Exception as e:
+            logger.exception("Error in generate_text")
             return render(request, "usermodule/result.html", {"output_text": f"❌ خطأ: {str(e)}"})
 
     return render(request, "usermodule/index.html")
