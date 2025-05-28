@@ -100,7 +100,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-attachment: scroll;
     color: var(--color-text-primary);
     line-height: 1.6;
     min-height: 100vh;
@@ -421,7 +421,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-attachment: scroll;
     color: var(--color-text-primary);
     display: flex;
     flex-direction: column;
