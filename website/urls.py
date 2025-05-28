@@ -23,9 +23,3 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', include("apps.usermodule.urls"))
 ]
-
-urlpatterns += [
-    re_path(r'^media/(?P<path>.*)$', serve, {
-        'document_root': settings.MEDIA_ROOT,
-    }),
-]
