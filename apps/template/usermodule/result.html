@@ -5,38 +5,79 @@
 
 {% block content %}
 <div class="result-page">
-    <div class="result-wrapper">
-        <div class="result-card">
-            <div class="result-header">
-                <div class="success-icon">
-                    <i class="fas fa-check"></i>
-                </div>
-                <h1>تم إنشاء المخطوطة بنجاح</h1>
-            </div>
-
-            {% if processed_image_base64 %}
-            <div class="result-preview">
-                <div class="preview-wrapper">
-                    <img id="generated-image" src="data:image/png;base64,{{ processed_image_base64 }}" alt="المخطوطة المنشأة" style="height: 224px;">
-                </div>
-            </div>
-            {% endif %}
-
-            <div class="result-details">
-                <p>{{ output_text }}</p>
-            </div>
-
-            <div class="result-actions">
-                <a href="{% url 'index' %}" class="primary-btn">
-                    <span>مخطوطة جديدة</span>
-                </a>
-                {% if processed_image_base64 %}
-                <span onclick="downloadImage()" class="icon-btn">
-                    <i class="fas fa-download"></i>
-                </span>
-                {% endif %}
-            </div>
+  <div class="result-wrapper">
+    <div class="result-card">
+      <!-- Header: shows spinner then success -->
+      <div class="result-header">
+        <div class="status-icon" id="status-icon">
+          <i class="fas fa-spinner fa-pulse"></i>
         </div>
+        <h1 id="status-text">جاري تحسين المخطوطة...</h1>
+      </div>
+
+      <!-- Image preview (original then replaced) -->
+      <div class="result-preview">
+        <div class="preview-wrapper">
+          <img id="generated-image" 
+               src="{{ original_url }}" 
+               alt="المخطوطة" 
+               style="height: 224px;" />
+        </div>
+      </div>
+
+      <!-- Actions: new, download -->
+      <div class="result-actions">
+        <a href="{% url 'index' %}" class="primary-btn">
+          <span>مخطوطة جديدة</span>
+        </a>
+        <span id="download-btn" 
+              onclick="downloadImage()" 
+              class="icon-btn" 
+              style="display: none;">
+          <i class="fas fa-download"></i>
+        </span>
+      </div>
     </div>
+  </div>
 </div>
+
+<script>
+  (function() {
+    const statusUrl = "{% url 'check_status' job_id %}";
+    const imgEl     = document.getElementById('generated-image');
+    const statusText= document.getElementById('status-text');
+    const statusIcon= document.getElementById('status-icon');
+    const downloadBtn = document.getElementById('download-btn');
+
+    function poll() {
+      fetch(statusUrl)
+        .then(res => res.json())
+        .then(data => {
+          if (data.done) {
+            imgEl.src = data.url;
+            statusText.textContent = 'تم تحسين المخطوطة بنجاح';
+            statusIcon.innerHTML = '<i class="fas fa-check"></i>';
+            downloadBtn.style.display = 'inline-block';
+          } else {
+            setTimeout(poll, 2000);
+          }
+        })
+        .catch(err => {
+          console.error('Polling error:', err);
+          setTimeout(poll, 5000);
+        });
+    }
+
+    poll();
+
+    window.downloadImage = function() {
+      if (imgEl && imgEl.src) {
+        const link = document.createElement('a');
+        link.download = 'مخطوطة.png';
+        link.href = imgEl.src;
+        link.click();
+      }
+    };
+  })();
+</script>
 {% endblock %}
