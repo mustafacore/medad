@@ -23,5 +23,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 application = WhiteNoise(
     application,
     root=str(MEDIA_ROOT),
-    prefix='media/'
+    prefix='media/',
+    autorefresh=True
 )
