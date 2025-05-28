@@ -1,111 +1,122 @@
 import os
 import re
 import uuid
+import io
 import base64
 import requests
-import traceback
-import logging
-
+from urllib.parse import quote_plus
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.conf import settings
 from PIL import Image, ImageDraw, ImageFont
 import arabic_reshaper
 from bidi.algorithm import get_display
+import json
+import logging
+from django.http import JsonResponse
 
-# Utility to render Arabic text on an image
+BASE_DIR = settings.BASE_DIR
+
 def create_image_with_text(text, font_path, image_size=(224, 224), initial_font_size=27, min_font_size=10):
+    """Generate an image with Arabic text using the specified font, dynamically adjusting font size to fit."""
     reshaped_text = arabic_reshaper.reshape(text)
     bidi_text = get_display(reshaped_text)
+
     img = Image.new('RGB', image_size, color=(255, 255, 255))
     draw = ImageDraw.Draw(img)
+
     font_size = initial_font_size
     while font_size >= min_font_size:
         font = ImageFont.truetype(font_path, font_size)
         text_bbox = draw.textbbox((0, 0), bidi_text, font=font)
         text_width = text_bbox[2] - text_bbox[0]
         text_height = text_bbox[3] - text_bbox[1]
+
         if text_width <= image_size[0] and text_height <= image_size[1]:
             break
         font_size -= 1
+
     if font_size < min_font_size:
-        raise ValueError(f"Text '{bidi_text}' is too large to fit")
+        raise ValueError(f"Text '{bidi_text}' is too large to fit in the image even with the smallest font size ({min_font_size}).")
+
     text_x = (image_size[0] - text_width) // 2
     text_y = (image_size[1] - text_height) // 2
+
     draw.text((text_x, text_y), bidi_text, font=font, fill=(0, 0, 0))
     return img
-
-logger = logging.getLogger(__name__)
 
 def index(request):
     return render(request, "usermodule/index.html")
 
-
 def generate_text(request):
+    """
+    Processes the POST request with Arabic text, generates an image, saves it with a GUID filename,
+    sends the image URL to FastAPI for processing, and returns a result page.
+    """
     if request.method == "POST":
         user_text = request.POST.get("user_input", "").strip()
         arabic_regex = re.compile(r'^[\u0600-\u06FF\s]+$')
 
-        # Validate Arabic-only input
+        # Validate that the text is Arabic
         if not arabic_regex.match(user_text):
             return render(request, "usermodule/result.html", {
-                "processed_image_base64": None,
                 "output_text": "❌ يُسمح فقط بإدخال النصوص العربية بدون أرقام أو رموز!"
             })
 
-        # Limit words
-        if len(user_text.split()) > 10:
+        # Limit input to 10 words
+        words = user_text.split()
+        if len(words) > 10:
             return render(request, "usermodule/result.html", {
-                "processed_image_base64": None,
                 "output_text": "⚠️ يُسمح بإدخال 10 كلمات كحد أقصى!"
             })
 
-        font_path = os.path.join(settings.BASE_DIR, "apps", "static", "fonts", "arfonts-arial-bold.ttf")
+        # Path to the Arabic font file (ensure the path is correct)
+        font_path = os.path.join(BASE_DIR, "apps", "static", "fonts", "arfonts-arial-bold.ttf")
+        
         try:
-            # 1) Generate & save image
-            img = create_image_with_text(user_text, font_path)
+            # Generate the image
+            image = create_image_with_text(user_text, font_path)
+            
+            # Generate a unique GUID for the image
             unique_id = str(uuid.uuid4())
             filename = f"{unique_id}.png"
-            folder = os.path.join(settings.MEDIA_ROOT, "generated_images")
-            os.makedirs(folder, exist_ok=True)
-            file_path = os.path.join(folder, filename)
-            img.save(file_path, format="PNG")
-
-            # 2) Build URL for display
-            rel_url = settings.MEDIA_URL + "generated_images/" + filename
-            image_url = request.build_absolute_uri(rel_url)
-
-            # 3) POST raw bytes to FastAPI
-            with open(file_path, "rb") as f:
-                files = {"file": (filename, f, "image/png")}
-                resp = requests.post(
-                    settings.FASTAPI_URL + "/generate-file",
-                    files=files,
-                    timeout=120
-                )
-
-            # 4) Handle FastAPI response
-            if resp.status_code == 200:
-                proc_bytes = resp.content
-                proc_b64 = base64.b64encode(proc_bytes).decode('utf-8')
-                msg = ""
+            
+            # Define the folder to store generated images under MEDIA_ROOT
+            image_folder = os.path.join(settings.MEDIA_ROOT, "generated_images")
+            if not os.path.exists(image_folder):
+                os.makedirs(image_folder)
+            
+            # Save the image file
+            file_path = os.path.join(image_folder, filename)
+            image.save(file_path, format="PNG")
+            
+            # Build the absolute URL for the image
+            relative_url = settings.MEDIA_URL + "generated_images/" + filename
+            image_url = request.build_absolute_uri(relative_url)
+            
+            # Call the deployed FastAPI Space
+            fastapi_response = requests.get(
+                settings.FASTAPI_URL,
+                params={"url": image_url},
+                timeout=30
+            )
+            
+            if fastapi_response.status_code == 200:
+                # Convert FastAPI returned binary image to Base64 string
+                processed_image_data = fastapi_response.content
+                processed_image_base64 = base64.b64encode(processed_image_data).decode('utf-8')
             else:
-                logger.error(f"FastAPI error {resp.status_code}: {resp.text}")
-                proc_b64 = None
-                msg = "❌ خطأ في معالجة الصورة."
+                processed_image_base64 = None
 
-            return render(request, "usermodule/result.html", {
-                "image_url": image_url,
-                "processed_image_base64": proc_b64,
-                "output_text": msg,
-            })
-
+            # Render the result page with both the generated image URL and the processed image
+            context = {
+                "image_url": image_url,  # Original generated image
+                "processed_image_base64": processed_image_base64,  # Processed image from FastAPI
+            }
+            
+            return render(request, "usermodule/result.html", context)
         except Exception as e:
-            tb = traceback.format_exc()
-            logger.error("generate_text Exception:\n%s", tb)
-            return render(request, "usermodule/result.html", {
-                "processed_image_base64": None,
-                "output_text": f"❌ حدث خطأ غير متوقع:\n{e}"
-            })
+            return render(request, "usermodule/result.html", {"output_text": f"❌ خطأ: {str(e)}"})
 
     return render(request, "usermodule/index.html")
 

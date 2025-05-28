@@ -148,4 +148,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 os.makedirs(MEDIA_ROOT, exist_ok=True)
 
 # URL of your deployed FastAPI Space
-FASTAPI_URL = "https://msallat5-medad-api.hf.space"
+FASTAPI_URL = "https://msallat5-medad-api.hf.space/generate"
+
+WHITENOISE_MAX_AGE = 3600

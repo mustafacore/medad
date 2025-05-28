@@ -14,3 +14,18 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'website.settings')
 
 application = get_wsgi_application()
+app = get_wsgi_application()
+
+from whitenoise import WhiteNoise
+from pathlib import Path
+
+# Point this to your MEDIA_ROOT
+BASE_DIR = Path(__file__).resolve().parent.parent
+MEDIA_ROOT = BASE_DIR / "media"
+
+# Wrap Django with WhiteNoise, serving media/ URLs directly
+application = WhiteNoise(
+    app,
+    root=str(MEDIA_ROOT),
+    prefix="media/"
+)
