@@ -1,40 +1,106 @@
 {% extends 'usermodule/layout/base.html' %}
 {% load static %}
 
-{% block title %}التواصل - مِدَاد{% endblock %}
+{% block title %}شاركنا أفكارك - مِدَاد{% endblock %}
 
 {% block content %}
-<div class="contact-page redesigned">
-    <div class="container">
-        <h1 class="page-title">تواصل معنا</h1>
-        <div class="contact-content">
-            <div class="contact-info">
-                <h2>نحن هنا لمساعدتك</h2>
-                <p>
-                    نرحب بجميع استفساراتكم واقتراحاتكم. يرجى مراسلتنا عبر البريد الإلكتروني للحصول على المساعدة الفورية.
+<div class="modern-contact-page">
+    <!-- Main Contact Section -->
+    <div class="contact-main">
+        <!-- Combined Hero and Categories Section -->
+        <div class="suggestion-categories">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <i class="fas fa-lightbulb"></i>
+                    شاركنا أفكارك
+                </h1>
+                <p class="hero-subtitle">
+                    نحن نؤمن بقوة الأفكار المبدعة. شاركنا اقتراحاتك لتطوير مِدَاد وجعله أفضل
                 </p>
             </div>
-            <div class="contact-form-wrapper">
-                <h3>أرسل لنا رسالة</h3>
-                <form id="contactForm" action="https://getform.io/f/avrwlyoa" method="POST" class="contact-form">
-                    <!-- Hidden honeypot field to prevent spam -->
-                    <input type="hidden" name="_gotcha" style="display:none !important">
-                    <div class="form-group">
-                        <input type="text" name="name" placeholder="الاسم" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" name="email" placeholder="البريد الإلكتروني" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="message" placeholder="رسالتك" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">
-                        <i class="fas fa-paper-plane"></i>
-                        إرسال الرسالة
-                    </button>
-                </form>
-                <div id="formMessage" style="display: none;"></div>
+            
+            <h2 class="section-title">ما نوع اقتراحك؟</h2>
+            <div class="category-grid">
+                <div class="category-card" data-category="feature">
+                    <i class="fas fa-magic"></i>
+                    <h3>ميزة جديدة</h3>
+                    <p>اقترح ميزة تود رؤيتها في مِدَاد</p>
+                </div>
+                <div class="category-card" data-category="improvement">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>تحسين</h3>
+                    <p>كيف يمكننا تحسين التجربة الحالية؟</p>
+                </div>
+                <div class="category-card" data-category="bug">
+                    <i class="fas fa-bug"></i>
+                    <h3>مشكلة تقنية</h3>
+                    <p>واجهت مشكلة؟ أخبرنا عنها</p>
+                </div>
+                <div class="category-card" data-category="general">
+                    <i class="fas fa-comments"></i>
+                    <h3>عام</h3>
+                    <p>أي شيء آخر تود مشاركته معنا</p>
+                </div>
             </div>
+        </div>
+
+        <!-- Contact Form (Hidden Initially) -->
+        <div class="modern-contact-form" id="contactFormSection" style="display: none;">
+            <h2 class="form-title">أخبرنا بفكرتك</h2>
+            <form id="modernContactForm" action="https://getform.io/f/avrwlyoa" method="POST" class="suggestion-form">
+                <!-- Hidden fields -->
+                <input type="hidden" name="_gotcha" style="display:none !important">
+                <input type="hidden" name="category" id="selectedCategory" value="">
+                
+                <!-- Form Fields -->
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="userName">الاسم</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="userName" name="name" placeholder="اسمك الكريم" required>
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="userEmail">البريد الإلكتروني</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="userEmail" name="email" placeholder="example@email.com" required>
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="suggestionTitle">عنوان الاقتراح</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="suggestionTitle" name="title" placeholder="عنوان مختصر لفكرتك" required>
+                        <i class="fas fa-heading"></i>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="suggestionMessage">تفاصيل الاقتراح</label>
+                    <div class="input-wrapper">
+                        <textarea id="suggestionMessage" name="message" placeholder="شاركنا تفاصيل فكرتك أو اقتراحك..." required></textarea>
+                        <i class="fas fa-edit"></i>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="modern-submit-btn">
+                    <span class="btn-content">
+                        <i class="fas fa-rocket"></i>
+                        <span class="btn-text">إرسال الاقتراح</span>
+                    </span>
+                    <div class="btn-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        جاري الإرسال...
+                    </div>
+                </button>
+            </form>
+
+            <!-- Form Messages -->
+            <div id="modernFormMessage" class="form-message"></div>
         </div>
     </div>
 </div>

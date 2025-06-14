@@ -67,8 +67,9 @@
             statusIcon.innerHTML = '<i class="fas fa-check"></i>';
             statusIcon.classList.add('done'); 
 
-            // show download
-            downloadBtn.style.display = 'inline-block';
+            // show download with animation
+            downloadBtn.style.display = 'inline-flex';
+            downloadBtn.classList.add('visible');
           } else {
             setTimeout(poll, 2000);
           }
