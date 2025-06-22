@@ -44,14 +44,14 @@
             </div>
         </div>
 
-        <!-- Contact Form (Hidden Initially) -->
-        <div class="modern-contact-form" id="contactFormSection" style="display: none;">
+        <!-- Contact Form -->
+        <div class="modern-contact-form" id="contactFormSection">
             <h2 class="form-title">أخبرنا بفكرتك</h2>
-            <form id="modernContactForm" action="https://getform.io/f/avrwlyoa" method="POST" class="suggestion-form">
+            <form id="modernContactForm" action="https://formspree.io/f/xrbkybov" method="POST" class="suggestion-form">
                 <!-- Hidden fields -->
                 <input type="hidden" name="_gotcha" style="display:none !important">
                 <input type="hidden" name="category" id="selectedCategory" value="">
-                
+
                 <!-- Form Fields -->
                 <div class="form-row">
                     <div class="input-group">
@@ -92,7 +92,7 @@
                         <i class="fas fa-rocket"></i>
                         <span class="btn-text">إرسال الاقتراح</span>
                     </span>
-                    <div class="btn-loading">
+                    <div class="btn-loading" style="display: none;">
                         <i class="fas fa-spinner fa-spin"></i>
                         جاري الإرسال...
                     </div>
@@ -100,8 +100,61 @@
             </form>
 
             <!-- Form Messages -->
-            <div id="modernFormMessage" class="form-message"></div>
+            <div id="modernFormMessage" class="form-message" style="display: none;"></div>
         </div>
     </div>
 </div>
+
+<!-- JavaScript to handle form submit -->
+<script>
+    const form = document.getElementById('modernContactForm');
+    const loadingSpinner = document.querySelector('.btn-loading');
+    const btnContent = document.querySelector('.btn-content');
+    const messageDiv = document.getElementById('modernFormMessage');
+
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        loadingSpinner.style.display = 'inline-block';
+        btnContent.style.display = 'none';
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                messageDiv.style.display = 'block';
+                messageDiv.innerHTML = '<p style="color: green;">✅ تم إرسال اقتراحك بنجاح. شكرًا لمساهمتك!</p>';
+                form.reset();
+                document.getElementById('selectedCategory').value = '';
+            } else {
+                const result = await response.json();
+                messageDiv.style.display = 'block';
+                messageDiv.innerHTML = `<p style="color: red;">❌ حدث خطأ أثناء الإرسال: ${result.message || 'حاول مرة أخرى لاحقًا'}</p>`;
+            }
+        } catch (error) {
+            messageDiv.style.display = 'block';
+            messageDiv.innerHTML = '<p style="color: red;">❌ حدث خطأ غير متوقع. حاول مرة أخرى.</p>';
+        }
+
+        loadingSpinner.style.display = 'none';
+        btnContent.style.display = 'inline-block';
+    });
+
+    // Category card click handler
+    document.querySelectorAll('.category-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const category = card.getAttribute('data-category');
+            document.getElementById('selectedCategory').value = category;
+            document.getElementById('contactFormSection').scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+</script>
 {% endblock %}
