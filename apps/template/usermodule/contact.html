@@ -47,7 +47,7 @@
         <!-- Contact Form -->
         <div class="modern-contact-form" id="contactFormSection">
             <h2 class="form-title">أخبرنا بفكرتك</h2>
-            <form id="modernContactForm" action="https://formspree.io/f/xrbkybov" method="POST" class="suggestion-form">
+            <form id="modernContactForm" action="/contact/send/" method="POST" class="suggestion-form">
                 <!-- Hidden fields -->
                 <input type="hidden" name="_gotcha" style="display:none !important">
                 <input type="hidden" name="category" id="selectedCategory" value="">
@@ -121,7 +121,7 @@
         const formData = new FormData(form);
 
         try {
-            const response = await fetch("/contact/send/", {
+            const response = await fetch(form.action, {
                 method: 'POST',
                 body: formData
             });
