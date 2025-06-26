@@ -158,3 +158,19 @@ def contact(request):
 def handler404(request, exception):
     """Custom 404 error handler."""
     return render(request, 'usermodule/404.html', status=404)
+
+@csrf_exempt
+@require_POST
+def contact_proxy(request):
+    try:
+        response = requests.post(
+            "https://formspree.io/f/xrbkybov",
+            data=request.POST,
+            headers={"Accept": "application/json"}
+        )
+        if response.status_code == 200:
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"error": "فشل في الإرسال"}, status=400)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

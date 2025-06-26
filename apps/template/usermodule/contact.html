@@ -18,7 +18,7 @@
                     نحن نؤمن بقوة الأفكار المبدعة. شاركنا اقتراحاتك لتطوير مِدَاد وجعله أفضل
                 </p>
             </div>
-            
+
             <h2 class="section-title">ما نوع اقتراحك؟</h2>
             <div class="category-grid">
                 <div class="category-card" data-category="feature">
@@ -81,7 +81,8 @@
                 <div class="input-group">
                     <label for="suggestionMessage">تفاصيل الاقتراح</label>
                     <div class="input-wrapper">
-                        <textarea id="suggestionMessage" name="message" placeholder="شاركنا تفاصيل فكرتك أو اقتراحك..." required></textarea>
+                        <textarea id="suggestionMessage" name="message" placeholder="شاركنا تفاصيل فكرتك أو اقتراحك..."
+                            required></textarea>
                         <i class="fas fa-edit"></i>
                     </div>
                 </div>
@@ -118,27 +119,24 @@
         btnContent.style.display = 'none';
 
         const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
 
         try {
-            const response = await fetch(form.action, {
+            const response = await fetch("/contact/send/", {
                 method: 'POST',
-                headers: {
-                    'Accept': 'application/json'
-                },
                 body: formData
             });
 
-            if (response.ok) {
-                messageDiv.style.display = 'block';
+            const result = await response.json();
+
+            messageDiv.style.display = 'block';
+            if (response.ok && result.success) {
                 messageDiv.innerHTML = '<p style="color: green;">✅ تم إرسال اقتراحك بنجاح. شكرًا لمساهمتك!</p>';
                 form.reset();
                 document.getElementById('selectedCategory').value = '';
             } else {
-                const result = await response.json();
-                messageDiv.style.display = 'block';
-                messageDiv.innerHTML = `<p style="color: red;">❌ حدث خطأ أثناء الإرسال: ${result.message || 'حاول مرة أخرى لاحقًا'}</p>`;
+                messageDiv.innerHTML = `<p style="color: red;">❌ ${result.error || 'حدث خطأ أثناء الإرسال. حاول مرة أخرى لاحقًا.'}</p>`;
             }
+
         } catch (error) {
             messageDiv.style.display = 'block';
             messageDiv.innerHTML = '<p style="color: red;">❌ حدث خطأ غير متوقع. حاول مرة أخرى.</p>';
@@ -146,15 +144,6 @@
 
         loadingSpinner.style.display = 'none';
         btnContent.style.display = 'inline-block';
-    });
-
-    // Category card click handler
-    document.querySelectorAll('.category-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const category = card.getAttribute('data-category');
-            document.getElementById('selectedCategory').value = category;
-            document.getElementById('contactFormSection').scrollIntoView({ behavior: 'smooth' });
-        });
     });
 </script>
 {% endblock %}
