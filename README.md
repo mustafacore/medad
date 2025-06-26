@@ -57,7 +57,7 @@ Arabic calligraphy is a centuries-old cultural treasure, traditionally crafted b
 
 | Metric             | Value      |
 |--------------------|------------|
-| **SSIM**           | 0.957      |
+| **SSIM**           | 0.96      |
 | **PSNR (dB)**      | 26.29 dB   |
 
 > The model consistently produces high-fidelity Thuluth calligraphy, preserving both stroke detail and inter-letter harmony across phrases.  
