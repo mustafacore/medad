@@ -11,6 +11,8 @@ from django.conf import settings
 from PIL import Image, ImageDraw, ImageFont
 import arabic_reshaper
 from bidi.algorithm import get_display
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 # Configure logging
 logger = logging.getLogger(__name__)
